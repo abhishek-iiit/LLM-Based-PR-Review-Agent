@@ -91,10 +91,8 @@ class LLMService:
         usage = getattr(response, "usage_metadata", None) or {}
         if isinstance(usage, dict):
             self._total_tokens = TokenUsage(
-                input_tokens=self._total_tokens.input_tokens
-                + usage.get("input_tokens", 0),
-                output_tokens=self._total_tokens.output_tokens
-                + usage.get("output_tokens", 0),
+                input_tokens=self._total_tokens.input_tokens + usage.get("input_tokens", 0),
+                output_tokens=self._total_tokens.output_tokens + usage.get("output_tokens", 0),
             )
         self._call_count += 1
 

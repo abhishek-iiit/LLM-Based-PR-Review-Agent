@@ -70,9 +70,7 @@ def _verify_github_signature(payload: bytes, signature_header: str, secret: str)
     """
     if not signature_header.startswith("sha256="):
         return False
-    expected = "sha256=" + hmac.new(
-        secret.encode(), payload, hashlib.sha256
-    ).hexdigest()
+    expected = "sha256=" + hmac.new(secret.encode(), payload, hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, signature_header)
 
 
@@ -164,18 +162,14 @@ async def github_webhook(
     # ── Event filtering ────────────────────────────────────────────────────
     if x_github_event != "pull_request":
         log.debug("ignoring non-PR event", event=x_github_event)
-        return JSONResponse(
-            content={"status": "ignored", "reason": f"event={x_github_event}"}
-        )
+        return JSONResponse(content={"status": "ignored", "reason": f"event={x_github_event}"})
 
     payload: dict[str, Any] = await request.json()
     action: str = payload.get("action", "")
 
     if action not in ("opened", "synchronize", "reopened"):
         log.debug("ignoring PR action", action=action)
-        return JSONResponse(
-            content={"status": "ignored", "reason": f"action={action}"}
-        )
+        return JSONResponse(content={"status": "ignored", "reason": f"action={action}"})
 
     # ── Extract PR details ─────────────────────────────────────────────────
     pr = payload.get("pull_request", {})

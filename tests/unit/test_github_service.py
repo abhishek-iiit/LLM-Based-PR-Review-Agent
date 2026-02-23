@@ -46,8 +46,9 @@ def mock_settings() -> MagicMock:
 
 @pytest.fixture()
 def github_service(mock_settings: MagicMock) -> GitHubService:
-    with patch("pr_review_agent.services.github_service.Github"), patch(
-        "pr_review_agent.services.github_service.Auth"
+    with (
+        patch("pr_review_agent.services.github_service.Github"),
+        patch("pr_review_agent.services.github_service.Auth"),
     ):
         svc = GitHubService(settings=mock_settings)
         return svc

@@ -76,7 +76,7 @@ def _extract_python_symbols(source: str) -> list[tuple[str, str]]:
     try:
         tree = ast.parse(source)
         for node in ast.walk(tree):
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef):
                 # Skip private/dunder methods and test functions
                 if not node.name.startswith("_") and not node.name.startswith("test_"):
                     symbols.append((node.name, "function"))
@@ -123,9 +123,7 @@ class TestCoverageAgent:
         file_changes: list[FileChange] = state.get("file_changes", [])
 
         # Find all test files being added/modified in this PR
-        test_filenames: set[str] = {
-            fc.filename for fc in file_changes if fc.is_test_file
-        }
+        test_filenames: set[str] = {fc.filename for fc in file_changes if fc.is_test_file}
 
         suggestions: list[TestSuggestion] = []
 
@@ -190,8 +188,7 @@ class TestCoverageAgent:
 
         existing_stats: PipelineStats = state.get("stats", PipelineStats())
         updated_stats = PipelineStats(
-            total_tokens_used=existing_stats.total_tokens_used
-            + self._llm.total_tokens.total,
+            total_tokens_used=existing_stats.total_tokens_used + self._llm.total_tokens.total,
             llm_calls=existing_stats.llm_calls + self._llm.call_count,
             files_reviewed=existing_stats.files_reviewed,
             issues_found=existing_stats.issues_found,

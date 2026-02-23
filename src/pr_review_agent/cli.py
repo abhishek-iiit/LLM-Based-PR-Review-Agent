@@ -87,9 +87,7 @@ def review(
 
     # Validate repo format
     if "/" not in repo or repo.count("/") != 1:
-        click.echo(
-            f"❌ Invalid repo format '{repo}'. Expected 'owner/repo'.", err=True
-        )
+        click.echo(f"❌ Invalid repo format '{repo}'. Expected 'owner/repo'.", err=True)
         sys.exit(EXIT_CONFIG_ERROR)
 
     click.echo(f"🔍 Reviewing PR #{pr_number} in {repo} …")

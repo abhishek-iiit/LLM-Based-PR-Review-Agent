@@ -152,8 +152,7 @@ class CodeReviewAgent:
         # Update stats
         existing_stats: PipelineStats = state.get("stats", PipelineStats())
         updated_stats = PipelineStats(
-            total_tokens_used=existing_stats.total_tokens_used
-            + self._llm.total_tokens.total,
+            total_tokens_used=existing_stats.total_tokens_used + self._llm.total_tokens.total,
             llm_calls=existing_stats.llm_calls + self._llm.call_count,
             files_reviewed=existing_stats.files_reviewed,
             issues_found=existing_stats.issues_found + len(all_issues),

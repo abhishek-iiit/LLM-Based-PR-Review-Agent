@@ -80,8 +80,7 @@ _RULES: list[Rule] = [
         severity=Severity.HIGH,
         issue_type=IssueType.SECURITY,
         message="`pickle.load()` on untrusted data can execute arbitrary code.",
-        suggestion="Use JSON, msgpack, or other safe serialisation formats for "
-        "untrusted input.",
+        suggestion="Use JSON, msgpack, or other safe serialisation formats for untrusted input.",
         languages=("python",),
     ),
     Rule(

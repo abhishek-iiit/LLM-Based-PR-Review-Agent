@@ -75,9 +75,7 @@ class ReviewFormatter:
 
         title = metadata.title if metadata else f"PR #{state.get('pr_number', '?')}"
         author = f"@{metadata.author}" if metadata else "unknown"
-        risk_badge = (
-            _RISK_BADGE.get(summary.risk_level, "") if summary else ""
-        )
+        risk_badge = _RISK_BADGE.get(summary.risk_level, "") if summary else ""
 
         lines = [
             "# 🤖 Automated PR Review",
@@ -130,9 +128,7 @@ class ReviewFormatter:
             counts[issue.severity] += 1
 
         summary_parts = [
-            f"{_SEVERITY_EMOJI[s]} {counts[s]} {s.value}"
-            for s in Severity
-            if counts[s] > 0
+            f"{_SEVERITY_EMOJI[s]} {counts[s]} {s.value}" for s in Severity if counts[s] > 0
         ]
         summary_line = " · ".join(summary_parts)
 

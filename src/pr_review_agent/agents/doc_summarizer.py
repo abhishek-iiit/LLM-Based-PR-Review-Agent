@@ -119,8 +119,7 @@ class DocSummarizerAgent:
 
         existing_stats: PipelineStats = state.get("stats", PipelineStats())
         updated_stats = PipelineStats(
-            total_tokens_used=existing_stats.total_tokens_used
-            + self._llm.total_tokens.total,
+            total_tokens_used=existing_stats.total_tokens_used + self._llm.total_tokens.total,
             llm_calls=existing_stats.llm_calls + self._llm.call_count,
             files_reviewed=existing_stats.files_reviewed,
             issues_found=existing_stats.issues_found,
@@ -161,8 +160,7 @@ class DocSummarizerAgent:
             key=lambda i: list(Severity).index(i.severity),
         )
         issue_samples = "\n".join(
-            f"- [{i.severity.upper()}] {i.file}: {i.message}"
-            for i in sorted_issues[:5]
+            f"- [{i.severity.upper()}] {i.file}: {i.message}" for i in sorted_issues[:5]
         )
         if not issue_samples:
             issue_samples = "None"
@@ -207,20 +205,14 @@ class DocSummarizerAgent:
         test_suggestions: list[TestSuggestion],
     ) -> PRSummary:
         """Produce a minimal summary without LLM when the call fails."""
-        critical_or_high = [
-            i for i in issues if i.severity in (Severity.CRITICAL, Severity.HIGH)
-        ]
-        risk = (
-            RiskLevel.HIGH if critical_or_high else
-            RiskLevel.MEDIUM if issues else
-            RiskLevel.LOW
-        )
+        critical_or_high = [i for i in issues if i.severity in (Severity.CRITICAL, Severity.HIGH)]
+        risk = RiskLevel.HIGH if critical_or_high else RiskLevel.MEDIUM if issues else RiskLevel.LOW
         return PRSummary(
             purpose=f"PR '{metadata.title}' by @{metadata.author}.",
             risk_level=risk,
             key_changes=[f"Changed {metadata.changed_files} file(s)"],
-            focus_areas=[
-                f"{len(critical_or_high)} critical/high severity issues found"
-            ] if critical_or_high else [],
+            focus_areas=[f"{len(critical_or_high)} critical/high severity issues found"]
+            if critical_or_high
+            else [],
             breaking_changes=False,
         )

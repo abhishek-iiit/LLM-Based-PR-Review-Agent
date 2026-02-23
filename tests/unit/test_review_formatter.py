@@ -69,9 +69,7 @@ class TestReviewFormatter:
         assert "<details>" in output
         assert "authenticate" in output
 
-    def test_footer_shows_stats(
-        self, formatter: ReviewFormatter, full_state: AgentState
-    ) -> None:
+    def test_footer_shows_stats(self, formatter: ReviewFormatter, full_state: AgentState) -> None:
         output = formatter.format_full_review(full_state)
         assert "1,500" in output or "1500" in output  # total_tokens
 

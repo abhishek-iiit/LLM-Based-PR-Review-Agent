@@ -68,8 +68,45 @@ pytest
 # Lint
 ruff check src/ tests/
 
+# Format
+ruff format src/ tests/
+
 # Type check
 mypy src/
+```
+
+### Pre-commit Hooks
+
+The repo ships with a [pre-commit](https://pre-commit.com/) config that automatically reformats and lints your code on every `git commit`.
+
+**First-time setup** (one-off, after cloning):
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+After that, every commit automatically runs:
+
+| Hook | What it does |
+|---|---|
+| `ruff-format` | Reformats staged files in-place |
+| `ruff --fix` | Auto-fixes lint issues; blocks commit if unfixable errors remain |
+
+If a commit is blocked, fix the reported errors, re-stage the files, and commit again:
+
+```bash
+# ruff will tell you what's wrong, e.g.:
+# src/foo.py:10:5: F401 'os' imported but unused
+ruff check --fix src/foo.py
+git add src/foo.py
+git commit -m "your message"
+```
+
+To run the hooks manually against all files at any time:
+
+```bash
+pre-commit run --all-files
 ```
 
 ## Configuration

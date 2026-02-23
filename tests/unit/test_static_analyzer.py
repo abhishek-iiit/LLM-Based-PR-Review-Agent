@@ -29,8 +29,7 @@ class TestStaticAnalyzer:
         fc = _make_python_change("@@ -1,1 +1,2 @@\n+result = eval(user_input)\n")
         issues = analyzer.analyze_file(fc)
         assert any(
-            i.severity == Severity.CRITICAL and i.issue_type == IssueType.SECURITY
-            for i in issues
+            i.severity == Severity.CRITICAL and i.issue_type == IssueType.SECURITY for i in issues
         )
 
     def test_hardcoded_secret_detected(self, analyzer: StaticAnalyzer) -> None:
@@ -77,18 +76,14 @@ class TestStaticAnalyzer:
     def test_removed_lines_not_flagged(self, analyzer: StaticAnalyzer) -> None:
         """Issues on removed lines (starting with '-') should NOT be reported."""
         fc = _make_python_change(
-            "@@ -1,2 +1,1 @@\n"
-            "-result = eval(old_input)  # removed\n"
-            "+result = safe_parse(input)\n"
+            "@@ -1,2 +1,1 @@\n-result = eval(old_input)  # removed\n+result = safe_parse(input)\n"
         )
         issues = analyzer.analyze_file(fc)
         # Should not flag eval() on the removed line
         eval_issues = [i for i in issues if "eval" in i.message.lower()]
         assert eval_issues == []
 
-    def test_language_scoping_js_rule_not_applied_to_python(
-        self, analyzer: StaticAnalyzer
-    ) -> None:
+    def test_language_scoping_js_rule_not_applied_to_python(self, analyzer: StaticAnalyzer) -> None:
         """console.log should only flag JS/TS files, not Python files."""
         fc = _make_python_change("@@ -0,0 +1,1 @@\n+console.log('test')\n")
         issues = analyzer.analyze_file(fc)
@@ -117,10 +112,7 @@ class TestStaticAnalyzer:
 
     def test_line_number_extracted_from_hunk(self, analyzer: StaticAnalyzer) -> None:
         fc = _make_python_change(
-            "@@ -10,3 +10,4 @@\n"
-            " existing_line\n"
-            "+eval(user_data)\n"
-            " another_line\n"
+            "@@ -10,3 +10,4 @@\n existing_line\n+eval(user_data)\n another_line\n"
         )
         issues = analyzer.analyze_file(fc)
         eval_issues = [i for i in issues if "eval" in i.message.lower()]
