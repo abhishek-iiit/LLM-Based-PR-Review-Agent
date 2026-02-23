@@ -9,6 +9,13 @@ repos:
 
   - repo: local
     hooks:
+      - id: check-py-typed
+        name: py.typed marker present
+        language: system
+        entry: "bash -c 'test -f src/pr_review_agent/py.typed || (echo \"ERROR: src/pr_review_agent/py.typed is missing -- run: touch src/pr_review_agent/py.typed\" && exit 1)'"
+        pass_filenames: false
+        always_run: true
+
       - id: mypy
         name: mypy
         language: system
