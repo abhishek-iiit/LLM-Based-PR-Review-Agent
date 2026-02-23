@@ -14,7 +14,9 @@ from pr_review_agent.models.state import (
     PRSummary,
     RiskLevel,
     Severity,
-    TestSuggestion,
+)
+from pr_review_agent.models.state import (
+    TestSuggestion as Suggestion,
 )
 
 
@@ -101,7 +103,7 @@ class TestCodeIssue:
 
 class TestTestSuggestion:
     def test_valid_suggestion(self) -> None:
-        ts = TestSuggestion(
+        ts = Suggestion(
             file="app.py",
             symbol_name="my_func",
             symbol_type="function",
@@ -110,7 +112,7 @@ class TestTestSuggestion:
         assert ts.symbol_name == "my_func"
 
     def test_symbol_type_defaults(self) -> None:
-        ts = TestSuggestion(file="a.py", symbol_name="fn", test_stub="...")
+        ts = Suggestion(file="a.py", symbol_name="fn", test_stub="...")
         assert ts.symbol_type == "function"
 
 
