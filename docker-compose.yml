@@ -1,0 +1,29 @@
+services:
+  pr-review-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: pr-review-agent:latest
+    container_name: pr-review-agent
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    env_file:
+      - .env
+    environment:
+      LOG_FORMAT: json
+      LOG_LEVEL: INFO
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    # Limit resources to prevent runaway LLM call costs
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M

@@ -1,0 +1,57 @@
+name: Automated PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to review
+        required: true
+        type: number
+      repo:
+        description: Repository (owner/repo)
+        required: true
+        type: string
+
+jobs:
+  review:
+    name: Run PR Review Agent
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write   # to post review comments
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install PR Review Agent
+        run: pip install -e .
+
+      - name: Determine PR number and repo
+        id: pr-info
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "pr_number=${{ github.event.inputs.pr_number }}" >> $GITHUB_OUTPUT
+            echo "repo=${{ github.event.inputs.repo }}" >> $GITHUB_OUTPUT
+          else
+            echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run PR review
+        run: |
+          pr-review review \
+            --repo "${{ steps.pr-info.outputs.repo }}" \
+            --pr "${{ steps.pr-info.outputs.pr_number }}"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOG_LEVEL: INFO
+          LOG_FORMAT: console
