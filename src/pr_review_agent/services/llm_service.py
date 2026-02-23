@@ -15,8 +15,8 @@ import time
 from typing import Any, TypeVar
 
 from google.api_core.exceptions import ResourceExhausted
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
+from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
 from tenacity import (
     retry,

@@ -83,7 +83,7 @@ class GitHubService:
             reraise=True,
         )
 
-    def _get_repo(self, repo_name: str) -> "Repository":
+    def _get_repo(self, repo_name: str) -> Repository:
         """Fetch Repository object, reusing the authenticated client."""
         return self._client.get_repo(repo_name)
 
@@ -106,7 +106,7 @@ class GitHubService:
         start = time.perf_counter()
 
         @self._make_retry()
-        def _fetch() -> "PullRequest":
+        def _fetch() -> PullRequest:
             return self._get_repo(repo).get_pull(pr_number)
 
         try:

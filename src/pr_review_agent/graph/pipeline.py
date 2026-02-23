@@ -14,6 +14,7 @@ from typing import Any
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
+from langgraph.graph.state import CompiledStateGraph
 
 from pr_review_agent.agents.code_reviewer import CodeReviewAgent
 from pr_review_agent.agents.doc_summarizer import DocSummarizerAgent
@@ -71,7 +72,7 @@ def build_graph(
     code_reviewer: CodeReviewAgent | None = None,
     test_coverage: TestCoverageAgent | None = None,
     doc_summarizer: DocSummarizerAgent | None = None,
-) -> Any:
+) -> CompiledStateGraph:
     """Construct and compile the LangGraph StateGraph.
 
     Args:

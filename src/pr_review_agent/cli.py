@@ -120,7 +120,6 @@ def review(
     # Post to GitHub
     if not no_post:
         try:
-            from pr_review_agent.services.github_service import GitHubService
             from pr_review_agent.services.review_poster import ReviewPoster
 
             poster = ReviewPoster()

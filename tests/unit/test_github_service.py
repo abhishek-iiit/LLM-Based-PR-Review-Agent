@@ -9,7 +9,6 @@ import pytest
 from pr_review_agent.models.state import FileStatus
 from pr_review_agent.services.github_service import GitHubService, _detect_language
 
-
 # ── Language detection tests ──────────────────────────────────────────────────
 
 

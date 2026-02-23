@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from pr_review_agent.models.state import FileChange, FileStatus, IssueType, Severity
-from pr_review_agent.tools.static_analyzer import StaticAnalyzer, _RULES
+from pr_review_agent.tools.static_analyzer import StaticAnalyzer
 
 
 @pytest.fixture()

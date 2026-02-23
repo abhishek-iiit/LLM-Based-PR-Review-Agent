@@ -9,13 +9,7 @@ from pr_review_agent.models.state import (
     CodeIssue,
     IssueType,
     PipelineStats,
-    PRMetadata,
-    PRSummary,
-    RiskLevel,
     Severity,
-    TestSuggestion,
-    FileChange,
-    FileStatus,
 )
 from pr_review_agent.services.review_poster import ReviewFormatter
 

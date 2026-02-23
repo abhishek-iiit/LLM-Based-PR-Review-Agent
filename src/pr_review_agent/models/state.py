@@ -7,17 +7,16 @@ every node in the LangGraph pipeline.
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from typing import Annotated, Any
 
 from pydantic import BaseModel, Field
 from typing_extensions import TypedDict
 
-
 # ── Enumerations ──────────────────────────────────────────────────────────────
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     """Issue severity levels, ordered from most to least severe."""
 
     CRITICAL = "critical"
@@ -27,7 +26,7 @@ class Severity(str, Enum):
     INFO = "info"
 
 
-class IssueType(str, Enum):
+class IssueType(StrEnum):
     """Category of a code issue."""
 
     BUG = "bug"
@@ -38,7 +37,7 @@ class IssueType(str, Enum):
     TEST = "test"
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     """Overall PR risk level for the summary."""
 
     LOW = "low"
@@ -47,7 +46,7 @@ class RiskLevel(str, Enum):
     CRITICAL = "critical"
 
 
-class FileStatus(str, Enum):
+class FileStatus(StrEnum):
     """GitHub file change status."""
 
     ADDED = "added"
