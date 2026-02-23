@@ -7,7 +7,7 @@ posting review comments. All public methods retry on transient errors.
 from __future__ import annotations
 
 import time
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, cast
 
 from github import Auth, Github, GithubException, RateLimitExceededException
 from tenacity import (
@@ -74,7 +74,7 @@ class GitHubService:
 
     # ── Internal retry decorator ───────────────────────────────────────────────
 
-    def _make_retry(self) -> retry:  # type: ignore[type-arg]
+    def _make_retry(self) -> Any:
         """Build a tenacity retry decorator using settings."""
         return retry(
             retry=retry_if_exception_type((RateLimitExceededException, IOError)),
@@ -105,7 +105,7 @@ class GitHubService:
         log.info("fetching PR metadata", repo=repo, pr_number=pr_number)
         start = time.perf_counter()
 
-        @self._make_retry()
+        @self._make_retry()  # type: ignore[untyped-decorator]
         def _fetch() -> PullRequest:
             return self._get_repo(repo).get_pull(pr_number)
 
@@ -159,7 +159,7 @@ class GitHubService:
         log.info("fetching PR files", repo=repo, pr_number=pr_number)
         start = time.perf_counter()
 
-        @self._make_retry()
+        @self._make_retry()  # type: ignore[untyped-decorator]
         def _fetch() -> list[FileChange]:
             gh_repo = self._get_repo(repo)
             pr = gh_repo.get_pull(pr_number)
@@ -184,7 +184,7 @@ class GitHubService:
 
             return files
 
-        files = _fetch()
+        files = cast(list[FileChange], _fetch())
 
         log.info(
             "PR files fetched",
@@ -208,7 +208,7 @@ class GitHubService:
             body_length=len(body),
         )
 
-        @self._make_retry()
+        @self._make_retry()  # type: ignore[untyped-decorator]
         def _post() -> None:
             gh_repo = self._get_repo(repo)
             pr = gh_repo.get_pull(pr_number)
@@ -254,7 +254,7 @@ class GitHubService:
             line=line,
         )
 
-        @self._make_retry()
+        @self._make_retry()  # type: ignore[untyped-decorator]
         def _post() -> None:
             gh_repo = self._get_repo(repo)
             pr = gh_repo.get_pull(pr_number)

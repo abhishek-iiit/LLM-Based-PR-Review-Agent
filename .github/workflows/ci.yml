@@ -29,7 +29,7 @@ jobs:
         run: ruff format --check src/ tests/
 
       - name: Run mypy
-        run: mypy src/
+        run: mypy -p pr_review_agent
         env:
           # Mypy needs stubs; skip checking the actual API calls
           GEMINI_API_KEY: AIzaplaceholder

@@ -6,3 +6,15 @@ repos:
       - id: ruff-format
       - id: ruff
         args: [--fix]
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        language: system
+        # MYPYPATH=src bypasses the editable-install import hook so mypy can
+        # find py.typed directly in the source tree.
+        entry: env MYPYPATH=src mypy
+        args: [-p, pr_review_agent]
+        pass_filenames: false
+        types: [python]

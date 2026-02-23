@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import re
 import time
-from typing import Any, TypeVar
+from typing import Any, TypeVar, cast
 
 from google.api_core.exceptions import ResourceExhausted
 from langchain_core.messages import HumanMessage
@@ -144,13 +144,13 @@ class LLMService:
         start = time.perf_counter()
         log.debug("invoking LLM (raw)", prompt_length=len(prompt))
 
-        @self._retry()
+        @self._retry()  # type: ignore[untyped-decorator]
         def _call() -> str:
             response = self._client.invoke([HumanMessage(content=prompt)])
             self._track_usage(response)
             return str(response.content)
 
-        result = _call()
+        result = cast(str, _call())
         log.debug(
             "LLM raw response received",
             response_length=len(result),
@@ -182,7 +182,7 @@ class LLMService:
             prompt_length=len(prompt),
         )
 
-        @self._retry()
+        @self._retry()  # type: ignore[untyped-decorator]
         def _call() -> T:
             structured_client = self._client.with_structured_output(response_model)
             response = structured_client.invoke([HumanMessage(content=prompt)])
@@ -190,7 +190,7 @@ class LLMService:
             return response  # type: ignore[return-value]
 
         try:
-            result = _call()
+            result = cast(T, _call())
         except Exception as exc:
             log.warning(
                 "structured output failed, falling back to raw JSON extraction",

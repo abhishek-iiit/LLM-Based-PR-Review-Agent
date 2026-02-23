@@ -124,7 +124,7 @@ def get_settings() -> Settings:
     Using lru_cache means Settings is instantiated once and reused everywhere.
     In tests, call `get_settings.cache_clear()` after patching env vars.
     """
-    return Settings()
+    return Settings()  # type: ignore[call-arg]
 
 
 # Convenience alias — import this in the rest of the codebase

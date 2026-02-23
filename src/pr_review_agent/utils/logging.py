@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import logging
 import sys
-from typing import Any
+from typing import Any, cast
 
 import structlog
 from structlog.types import EventDict, WrappedLogger
@@ -71,7 +71,7 @@ def get_logger(name: str) -> structlog.BoundLogger:
         log = get_logger(__name__)
         log.info("fetching PR", pr_number=42, repo="owner/repo")
     """
-    return structlog.get_logger().bind(logger=name)
+    return cast(structlog.BoundLogger, structlog.get_logger().bind(logger=name))
 
 
 def bind_pipeline_context(run_id: str, pr_number: int, repo: str) -> None:

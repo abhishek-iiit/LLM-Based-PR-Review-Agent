@@ -81,8 +81,9 @@ ignore = [
 "tests/**/*.py" = ["S", "ANN"]
 # Prompt template strings legitimately exceed the line limit
 "src/pr_review_agent/agents/*.py" = ["E501"]
-# LLM response objects are opaque; Any is unavoidable for LangChain types
+# LLM response objects and tenacity retry return types require Any
 "src/pr_review_agent/services/llm_service.py" = ["ANN401"]
+"src/pr_review_agent/services/github_service.py" = ["ANN401"]
 
 # ── MyPy ──────────────────────────────────────────────────────────────────────
 [tool.mypy]

@@ -169,8 +169,8 @@ def validate_config() -> None:
     try:
         import google.generativeai as genai
 
-        genai.configure(api_key=settings.gemini_api_key)
-        model = genai.GenerativeModel(settings.llm_model)
+        genai.configure(api_key=settings.gemini_api_key)  # type: ignore[attr-defined]
+        model = genai.GenerativeModel(settings.llm_model)  # type: ignore[attr-defined]
         model.generate_content("ping", generation_config={"max_output_tokens": 5})
         click.echo("  ✅ Gemini API key valid")
     except Exception as exc:

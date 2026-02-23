@@ -72,7 +72,7 @@ ruff check src/ tests/
 ruff format src/ tests/
 
 # Type check
-mypy src/
+mypy -p pr_review_agent
 ```
 
 ### Pre-commit Hooks

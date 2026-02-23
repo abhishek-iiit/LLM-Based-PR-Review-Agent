@@ -10,8 +10,9 @@ from __future__ import annotations
 
 import time
 import uuid
-from typing import Any
+from typing import Any, cast
 
+from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
@@ -72,7 +73,7 @@ def build_graph(
     code_reviewer: CodeReviewAgent | None = None,
     test_coverage: TestCoverageAgent | None = None,
     doc_summarizer: DocSummarizerAgent | None = None,
-) -> CompiledStateGraph:
+) -> CompiledStateGraph:  # type: ignore[type-arg]
     """Construct and compile the LangGraph StateGraph.
 
     Args:
@@ -172,8 +173,8 @@ def run_pipeline(
         "metadata": {},
     }
 
-    config = {"configurable": {"thread_id": run_id}}
-    final_state: AgentState = app.invoke(initial_state, config=config)
+    config: RunnableConfig = {"configurable": {"thread_id": run_id}}
+    final_state: AgentState = cast(AgentState, app.invoke(initial_state, config=config))
 
     total_elapsed = time.perf_counter() - pipeline_start
 
